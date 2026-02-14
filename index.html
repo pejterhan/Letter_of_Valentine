@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hadiah Valentine Spesial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(145deg, #ffb6c1 0%, #ffc0cb 40%, #ffdae0 100%);
+            background-attachment: fixed;
+            padding: 1.5rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* container kartu utama */
+        .card {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 245, 245, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 48px 48px 48px 48px;
+            box-shadow: 0 25px 40px -10px rgba(220, 90, 120, 0.5),
+                        0 0 0 2px rgba(255, 220, 230, 0.6) inset;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #a12b5a;
+            text-shadow: 4px 4px 0 #ffd9e2, 6px 6px 0 rgba(255, 160, 180, 0.5);
+            letter-spacing: 2px;
+            word-break: break-word;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+
+        /* tombol cantik */
+        .valentine-button {
+            background: #ff4d6d;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+            padding: 1.2rem 2.2rem;
+            border-radius: 60px;
+            box-shadow: 0 10px 0 #9e2a4b, 0 12px 25px rgba(255, 65, 105, 0.5);
+            cursor: pointer;
+            transition: 0.1s linear;
+            margin: 1rem 0 1.8rem 0;
+            border: 2px solid #ffeef2;
+            letter-spacing: 1.5px;
+            transform: translateY(0);
+        }
+
+        .valentine-button:active {
+            box-shadow: 0 3px 0 #9e2a4b;
+            transform: translateY(7px);
+        }
+
+        /* pesan spesial yang muncul */
+        .message-box {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 40px;
+            padding: 2rem 2rem;
+            margin-top: 2.2rem;
+            border: 2px solid white;
+            box-shadow: 0 15px 25px rgba(190, 70, 100, 0.25);
+            text-align: left;
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            color: #571c33;
+            font-size: 1.2rem;
+            line-height: 1.7;
+            max-height: 70vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #ff8da1 #ffe3e8;
+        }
+
+        .message-box.show {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+        }
+
+        .message-box p {
+            margin-bottom: 1.2rem;
+        }
+
+        .message-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .message-box::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .message-box::-webkit-scrollbar-track {
+            background: #ffe3e8;
+            border-radius: 20px;
+        }
+
+        .message-box::-webkit-scrollbar-thumb {
+            background: #ff8da1;
+            border-radius: 20px;
+            border: 2px solid #ffeef2;
+        }
+
+        /* container untuk animasi hati */
+        .heart-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 1.8rem;
+            opacity: 0.8;
+            user-select: none;
+            color: #ff3366;
+            animation: fall linear infinite;
+            filter: drop-shadow(0 5px 8px rgba(255, 80, 120, 0.6));
+            will-change: transform;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20vh) rotate(0deg) scale(0.8);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(120vh) rotate(360deg) scale(1.4);
+                opacity: 0.2;
+            }
+        }
+
+        /* dekorasi tambahan : glitter pinggiran */
+        .glitter {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: 2rem;
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .glitter-right {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            font-size: 3rem;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 1;
+            transform: rotate(10deg);
+        }
+
+        /* responsif */
+        @media (max-width: 550px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            .valentine-button {
+                font-size: 1.4rem;
+                padding: 1rem 1.2rem;
+            }
+            .card {
+                padding: 1.8rem 1.2rem;
+            }
+            .message-box {
+                font-size: 1rem;
+                padding: 1.5rem;
+            }
+        }
+
+        /* biar tombol gak kena pointer-event di container */
+        .heart-container {
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- elemen latar hiasan kecil -->
+    <div class="glitter">💖🌸💗🌷💕</div>
+    <div class="glitter-right">💞🌺💘🌹💓</div>
+
+    <!-- container jatuhnya hati -->
+    <div class="heart-container" id="heartContainer"></div>
+
+    <!-- kartu utama -->
+    <main class="card">
+        <h1>💝 Happy Valentine's Day 💝</h1>
+
+        <button class="valentine-button" id="giftButton">Buka Surat Cinta Ini 💌</button>
+
+        <!-- pesan spesial yang akan muncul -->
+        <div class="message-box" id="specialMessage">
+            <p>Hari Valentine tidak hanya tentang pasangan, tetapi juga tentang rasa bahagia karena mendapatkan teman baru. Meskipun kita belum mengenal satu sama lain dalam waktu yang lama, sungguh aku merasa sangat senang dapat berjumpa denganmu dan teman-teman yang lain. Bersama-sama, kita menjadi bagian dari <a href="https://t.me/skijiclass/" class="tautan">@SKIJI CLASS,</a>, khususnya di B-CLASS.Aku berharap melalui kegiatan <a href="https://t.me/sclassinfo/692/" class="tautan">ini,</a> terjalin awal dari pertemanan yang seru sekaligus menyenangkan. Mari kita saling mendukung, tertawa bersama, dan membuat hidup ini jauh lebih berwarna.</p>
+
+            <p>Happy Valentine’s Day!</p>
+
+            <p>Aku berharap engkau selalu berbahagia, bukan hanya untuk hari ini,
+            melainkan juga untuk hari esok,<br>
+            bulan esok, tahun-tahun yang akan datang,<br>
+            dan seterusnya, hingga selama-lamanya.</p>
+
+            <p>Kita semua pantas untuk dicintai, mencintai,<br>
+            dan merasakan kebahagiaan<br>
+            sejauh serta sebanyak yang kita inginkan.</p>
+
+            <p>Maaf apabila pesan ini tersusun dengan tidak sempurna dan belum menggunakan tata bahasa yang baik sesuai dengan kaidah. Sejujurnya, aku merasa kebingungan harus menuliskan apa dan bagaimana cara merangkai kata-kata ini menjadi untaian yang indah. Semoga engkau berkenan menerima pemberian sederhana ini sebagai tanda kasih dariku.</p>
+
+            <p>Penuh Cinta, 🐿️<br>
+        </div>
+    </main>
+
+    <script>
+        (function() {
+            const giftButton = document.getElementById('giftButton');
+            const messageBox = document.getElementById('specialMessage');
+            const heartContainer = document.getElementById('heartContainer');
+
+            // fungsi membuat hati jatuh
+            function createFallingHeart() {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+
+                const heartSymbols = ['❤️', '🧡', '💛', '💚', '💙', '💜', '🤍', '💔', '❤️‍🔥', '❤️‍🩹', '💗', '💖', '💘', '💝', '💞'];
+                const randomHeart = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.textContent = randomHeart;
+
+                const size = Math.floor(Math.random() * 30 + 20); // 20px - 50px
+                heart.style.fontSize = size + 'px';
+
+                const startLeft = Math.random() * 100; // vw
+                heart.style.left = startLeft + 'vw';
+
+                const duration = Math.random() * 5 + 5; // 5s - 10s
+                heart.style.animationDuration = duration + 's';
+
+                const delay = Math.random() * 5; // 0s - 5s
+                heart.style.animationDelay = delay + 's';
+
+                const startRotate = Math.random() * 30 - 15;
+                heart.style.transform = `rotate(${startRotate}deg)`;
+
+                heartContainer.appendChild(heart);
+
+                setTimeout(() => {
+                    if (heart.parentNode) {
+                        heart.remove();
+                    }
+                }, (duration + delay + 0.5) * 1000);
+            }
+
+            function startHeartShower() {
+                const numberOfHearts = 55; 
+                for (let i = 0; i < numberOfHearts; i++) {
+                   
+                    setTimeout(() => {
+                        createFallingHeart();
+                    }, i * 30); 
+                }
+
+                let count = 0;
+                const interval = setInterval(() => {
+                    if (count < 35) { 
+                        createFallingHeart();
+                        count++;
+                    } else {
+                        clearInterval(interval);
+                    }
+                }, 200);
+
+                if (window._heartInterval) {
+                    clearInterval(window._heartInterval);
+                }
+                window._heartInterval = interval;
+
+                setTimeout(() => {
+                    if (window._heartInterval) {
+                        clearInterval(window._heartInterval);
+                        window._heartInterval = null;
+                    }
+                }, 8500);
+            }
+
+            function showMessage() {
+                if (!messageBox.classList.contains('show')) {
+                    messageBox.classList.add('show');
+                }
+            }
+
+            // Fungsi utama saat tombol diklik
+            function handleGiftClick() {
+
+                startHeartShower();
+
+                showMessage();
+
+                giftButton.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    giftButton.style.transform = '';
+                }, 150);
+            }
+            giftButton.addEventListener('click', handleGiftClick);
+        })();
+    </script>
+</body>
+</html>
